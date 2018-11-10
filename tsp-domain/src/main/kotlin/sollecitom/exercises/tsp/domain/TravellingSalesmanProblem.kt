@@ -72,9 +72,12 @@ class SimulatedAnnealing<SOLUTION>(private val initialTemperature: Double = 1000
     // Calculate the acceptance probability
     private fun acceptanceProbability(energy: Double, newEnergy: Double, temperature: Double): Double {
         // If the new solution is better, accept it
-        return if (newEnergy < energy) {
-            1.0
-        } else Math.exp((energy - newEnergy) / temperature)
+        return when {
+            newEnergy < energy -> 1.0
+            else -> Math.exp((energy - newEnergy) / (energy * temperature))
+            // TODO check if this normalization about works
+//            else -> Math.exp((energy - newEnergy) / temperature)
+        }
         // If the new solution is worse, calculate an acceptance probability
     }
 }
