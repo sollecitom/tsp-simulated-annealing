@@ -10,6 +10,8 @@ interface TravellingSalesmanProblem<LOCATION : Distant<DISTANCE, LOCATION>, DIST
 
     fun allTours(): Sequence<Tour<City<LOCATION, DISTANCE>>>
 
+    fun randomTour(): Tour<City<LOCATION, DISTANCE>> = Tour(cities.shuffled())
+
     companion object {
         fun <LOCATION : Distant<DISTANCE, LOCATION>, DISTANCE : Comparable<DISTANCE>> of(cities: Set<City<LOCATION, DISTANCE>>, distanceZero: DISTANCE, sumDistances: (DISTANCE, DISTANCE) -> DISTANCE): TravellingSalesmanProblem<LOCATION, DISTANCE> = TravellingSalesmanProblemImpl(cities, distanceZero, sumDistances)
 
