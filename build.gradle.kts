@@ -9,7 +9,6 @@ repositories {
 }
 
 buildscript {
-
     extra["junit_version"] = "5.3.1"
     extra["assertj_version"] = "3.11.1"
 }

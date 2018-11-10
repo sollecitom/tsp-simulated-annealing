@@ -10,7 +10,7 @@ internal fun <DISTANCE : Comparable<DISTANCE>, TOKEN> locations(distances: Map<P
             map += token to distanceZero
         }
         TokenizedRelativeLocation(token, map)
-    }
+    }.distinctBy { it.token }
 }
 
 internal fun <KEY, VALUE> Map<Pair<KEY, KEY>, VALUE>.symmetric(): Map<Pair<KEY, KEY>, VALUE> {
