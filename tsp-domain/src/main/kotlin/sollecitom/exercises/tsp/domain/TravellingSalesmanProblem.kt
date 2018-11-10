@@ -34,10 +34,9 @@ fun <LOCATION : Distant<DISTANCE, LOCATION>, DISTANCE : Comparable<DISTANCE>> Tr
 }
 
 // TODO move, refactor
-class SimulatedAnnealing<SOLUTION>(private val initialTemperature: Double = 10000.0, private val coolingRate: Double = 0.003, private val deriveNextSolution: (SOLUTION) -> SOLUTION, private val calculateCost: (SOLUTION) -> Double, private val isValid: (SOLUTION) -> Boolean) {
+class SimulatedAnnealing<SOLUTION>(private val initialTemperature: Double = 10000.0, private val coolingRate: Double = 0.003, private val deriveNextSolution: (SOLUTION) -> SOLUTION, private val calculateCost: (SOLUTION) -> Double) {
 
     fun run(initialSolution: SOLUTION): Pair<SOLUTION, Double> {
-        require(isValid.invoke(initialSolution))
 
         // Set initial temp
         var temp = initialTemperature
@@ -47,7 +46,7 @@ class SimulatedAnnealing<SOLUTION>(private val initialTemperature: Double = 1000
         // Loop until system has cooled
         while (temp > 1) {
             // Create new neighbour tour
-            val next = deriveNextSolution.invoke(current.first).also { require(isValid.invoke(it)) }.let { it to calculateCost.invoke(it) }
+            val next = deriveNextSolution.invoke(current.first).let { it to calculateCost.invoke(it) }
 
             // Get energy of solutions
             val currentEnergy = current.second

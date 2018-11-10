@@ -83,7 +83,7 @@ class TravellingSalesmanProblemTest {
             }
         }
 
-        val simulation = SimulatedAnnealing(deriveNextSolution = ::nextSolutionCandidate, calculateCost = problem::totalDistance, isValid = problem::acceptsAsSolution)
+        val simulation = SimulatedAnnealing(deriveNextSolution = ::nextSolutionCandidate, calculateCost = problem::totalDistance)
 
         val approximateBest = simulation.run(problem.randomTour())
 
