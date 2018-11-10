@@ -76,11 +76,13 @@ class TravellingSalesmanProblemTest {
             newTour[first] = tour[second]
             newTour[second] = tour[first]
 
-            return try {
+            // TODO refactor
+            val nextTour = try {
                 Tour(newTour)
             } catch (e: IllegalArgumentException) {
                 nextSolutionCandidate(tour)
             }
+            return if (problem.acceptsAsSolution(nextTour)) nextTour else nextSolutionCandidate(tour)
         }
 
         val simulation = SimulatedAnnealing(deriveNextSolution = ::nextSolutionCandidate, calculateCost = problem::totalDistance)
