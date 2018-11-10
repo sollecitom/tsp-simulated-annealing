@@ -6,7 +6,6 @@ data class Tour<ELEMENT>(private val path: List<ELEMENT>) : List<ELEMENT> by pat
 
     init {
         require(path.first() != path.last())
-        path.zipWithNext().forEach { cities -> require(cities.first != cities.second) }
     }
 
     override fun toString() = path.joinToString(" -> ", prefix = "[", postfix = "]")

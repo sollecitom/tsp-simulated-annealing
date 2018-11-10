@@ -30,3 +30,49 @@ fun <LOCATION : Distant<DISTANCE, LOCATION>, DISTANCE : Comparable<DISTANCE>> Tr
 
     return allTours().minBy(::totalDistance)!!
 }
+
+// TODO move, refactor
+class SimulatedAnnealing<SOLUTION>(private val initialTemperature: Double = 10000.0, private val coolingRate: Double = 0.003, private val deriveNextSolution: (SOLUTION) -> SOLUTION, private val calculateCost: (SOLUTION) -> Double, private val isValid: (SOLUTION) -> Boolean) {
+
+    fun run(initialSolution: SOLUTION): Pair<SOLUTION, Double> {
+        require(isValid.invoke(initialSolution))
+
+        // Set initial temp
+        var temp = initialTemperature
+
+        var best = initialSolution to calculateCost.invoke(initialSolution)
+        var current = initialSolution to calculateCost.invoke(initialSolution)
+        // Loop until system has cooled
+        while (temp > 1) {
+            // Create new neighbour tour
+            val next = deriveNextSolution.invoke(current.first).also { require(isValid.invoke(it)) }.let { it to calculateCost.invoke(it) }
+
+            // Get energy of solutions
+            val currentEnergy = current.second
+            val neighbourEnergy = next.second
+
+            // Decide if we should accept the neighbour
+            if (acceptanceProbability(currentEnergy, neighbourEnergy, temp) > Math.random()) {
+                current = next
+            }
+
+            // Keep track of the best solution found
+            if (current.second < best.second) {
+                best = current
+            }
+
+            // Cool system
+            temp *= 1 - coolingRate
+        }
+        return best
+    }
+
+    // Calculate the acceptance probability
+    private fun acceptanceProbability(energy: Double, newEnergy: Double, temperature: Double): Double {
+        // If the new solution is better, accept it
+        return if (newEnergy < energy) {
+            1.0
+        } else Math.exp((energy - newEnergy) / temperature)
+        // If the new solution is worse, calculate an acceptance probability
+    }
+}
