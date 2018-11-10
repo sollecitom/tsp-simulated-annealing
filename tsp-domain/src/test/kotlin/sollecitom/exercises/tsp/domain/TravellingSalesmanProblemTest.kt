@@ -20,7 +20,7 @@ class TravellingSalesmanProblemTest {
         val toronto = cities.single { it.name == "Toronto"}
         val rome = cities.single { it.name == "Rome"}
 
-        val problem = TravellingSalesmanProblem(cities, 0.0, Double::plus)
+        val problem = TravellingSalesmanProblem.withDoubleAsDistance(cities)
 
         val tour = Tour(rome, toronto, florence)
 
@@ -42,7 +42,7 @@ class TravellingSalesmanProblemTest {
 
         val cities = locations(distances.symmetric(), 0.0).map { City(it.token, it) }.toSet()
 
-        val problem = TravellingSalesmanProblem(cities, 0.0, Double::plus)
+        val problem= TravellingSalesmanProblem.withDoubleAsDistance(cities)
 
         println("All possible tours:")
         problem.allTours().forEach { println("$it: ${problem.totalDistance(it)}") }
