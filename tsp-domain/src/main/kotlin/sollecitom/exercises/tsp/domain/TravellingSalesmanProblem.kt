@@ -34,6 +34,7 @@ fun <LOCATION : Distant<DISTANCE, LOCATION>, DISTANCE : Comparable<DISTANCE>> Tr
 }
 
 // TODO move, refactor
+// TODO introduce SimulatedAnnealing-compatible interface defining `deriveNextSolution` and `calculateCost`. Then, create an extension function or an interface function `approximateSolutionBySimulatedAnnealing()`
 class SimulatedAnnealing<SOLUTION>(private val initialTemperature: Double = 10000.0, private val coolingRate: Double = 0.003, private val deriveNextSolution: (SOLUTION) -> SOLUTION, private val calculateCost: (SOLUTION) -> Double) {
 
     fun run(initialSolution: SOLUTION): Pair<SOLUTION, Double> {
