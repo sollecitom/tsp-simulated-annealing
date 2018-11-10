@@ -68,7 +68,6 @@ class TravellingSalesmanProblemTest {
         val problem = TravellingSalesmanProblem.withDoubleAsDistance(cities)
 
         fun nextSolutionCandidate(tour: Tour<City<TokenizedRelativeLocation<Double, String>, Double>>): Tour<City<TokenizedRelativeLocation<Double, String>, Double>> {
-
             val newTour = tour.toMutableList()
             val first = (tour.size * Math.random()).toInt()
             val second = (tour.size * Math.random()).toInt()
