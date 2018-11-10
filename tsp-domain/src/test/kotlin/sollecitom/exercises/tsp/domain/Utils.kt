@@ -1,15 +1,15 @@
 package sollecitom.exercises.tsp.domain
 
-import java.util.AbstractMap
+import java.util.*
 
-internal fun <DISTANCE : Comparable<DISTANCE>, TOKEN> locations(distances: Map<Pair<TOKEN, TOKEN>, DISTANCE>, distanceZero: DISTANCE? = null): List<TokenizedRelativeLocation<DISTANCE, TOKEN>> {
+internal fun <DISTANCE : Comparable<DISTANCE>, TOKEN> locations(distances: Map<Pair<TOKEN, TOKEN>, DISTANCE>, distanceZero: DISTANCE? = null, maxDistance: DISTANCE): List<TokenizedRelativeLocation<DISTANCE, TOKEN>> {
     return distances.map { (pair, _) ->
         val token = pair.first
         val map = distances.filter { it.key.first == token }.mapKeys { entry -> entry.key.second }.toMutableMap()
         distanceZero?.let {
             map += token to distanceZero
         }
-        TokenizedRelativeLocation(token, map)
+        TokenizedRelativeLocation(token, map, maxDistance)
     }.distinctBy { it.token }
 }
 

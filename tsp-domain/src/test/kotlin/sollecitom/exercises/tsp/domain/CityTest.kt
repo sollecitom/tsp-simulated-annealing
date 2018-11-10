@@ -14,7 +14,7 @@ class CityTest {
         distances["Rome" to "Florence"] = 200.0
         distances["Florence" to "Toronto"] = 5100.0
 
-        val cities = locations(distances.symmetric(), 0.0).map { City(it.token, it) }.associateBy(City<*, *>::name)
+        val cities = locations(distances.symmetric(), 0.0, Double.MAX_VALUE).map { City(it.token, it) }.associateBy(City<*, *>::name)
 
         val florence = cities["Florence"]!!
         val toronto = cities["Toronto"]!!

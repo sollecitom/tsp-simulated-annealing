@@ -14,7 +14,7 @@ class TravellingSalesmanProblemTest {
         distances["Rome" to "Florence"] = 200.0
         distances["Florence" to "Toronto"] = 5100.0
 
-        val cities = locations(distances.symmetric(), 0.0).map { City(it.token, it) }.toSet()
+        val cities = locations(distances.symmetric(), 0.0, Double.POSITIVE_INFINITY).map { City(it.token, it) }.toSet()
 
         val florence = cities.single { it.name == "Florence" }
         val toronto = cities.single { it.name == "Toronto" }
@@ -39,19 +39,21 @@ class TravellingSalesmanProblemTest {
         distances["Toronto" to "Rome"] = 5000.0
         distances["Rome" to "Florence"] = 200.0
         distances["Florence" to "Toronto"] = 5100.0
+        distances["Toronto" to "Milan"] = 4500.0
+        distances["Milan" to "Rome"] = 450.0
 
-        val cities = locations(distances.symmetric(), 0.0).map { City(it.token, it) }.toSet()
+        val cities = locations(distances.symmetric(), 0.0, Double.POSITIVE_INFINITY).map { City(it.token, it) }.toSet()
 
         val problem = TravellingSalesmanProblem.withDoubleAsDistance(cities)
 
         println("All possible tours:")
-        problem.allTours().forEach { println("$it: ${problem.totalDistance(it)}") }
+        problem.allTours().filter { it.second != Double.POSITIVE_INFINITY }.forEach { println("${it.first}: ${it.second}") }
 
-        val solution = problem.allTours().map { it to problem.totalDistance(it) }.minBy(Pair<*, Double>::second)!!
+        val solution = problem.bruteForceSolution()
 
         println()
         println("Optimal tours:")
-        problem.allTours().filter { problem.totalDistance(it) == solution.second }.forEach { println("$it: ${problem.totalDistance(it)}") }
+        problem.allTours().filter { it.second == solution.second }.forEach { println("${it.first}: ${it.second}") }
     }
 
     @Test
@@ -62,8 +64,10 @@ class TravellingSalesmanProblemTest {
         distances["Toronto" to "Rome"] = 5000.0
         distances["Rome" to "Florence"] = 200.0
         distances["Florence" to "Toronto"] = 5100.0
+        distances["Toronto" to "Milan"] = 4500.0
+        distances["Milan" to "Rome"] = 450.0
 
-        val cities = locations(distances.symmetric(), 0.0).map { City(it.token, it) }.toSet()
+        val cities = locations(distances.symmetric(), 0.0, Double.POSITIVE_INFINITY).map { City(it.token, it) }.toSet()
 
         val problem = TravellingSalesmanProblem.withDoubleAsDistance(cities)
 

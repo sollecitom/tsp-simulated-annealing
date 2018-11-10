@@ -8,7 +8,7 @@ interface TravellingSalesmanProblem<LOCATION : Distant<DISTANCE, LOCATION>, DIST
 
     fun acceptsAsSolution(tour: Tour<City<LOCATION, DISTANCE>>): Boolean
 
-    fun allTours(): Sequence<Tour<City<LOCATION, DISTANCE>>>
+    fun allTours(): Sequence<Pair<Tour<City<LOCATION, DISTANCE>>, DISTANCE>>
 
     fun randomTour(): Tour<City<LOCATION, DISTANCE>> = Tour(cities.shuffled())
 
@@ -25,12 +25,12 @@ private class TravellingSalesmanProblemImpl<LOCATION : Distant<DISTANCE, LOCATIO
 
     override fun acceptsAsSolution(tour: Tour<City<LOCATION, DISTANCE>>) = tour.toSet() == cities
 
-    override fun allTours(): Sequence<Tour<City<LOCATION, DISTANCE>>> = cities.permutations().map(::Tour)
+    override fun allTours(): Sequence<Pair<Tour<City<LOCATION, DISTANCE>>, DISTANCE>> = cities.permutations().map(::Tour).map { it to totalDistance(it) }
 }
 
-fun <LOCATION : Distant<DISTANCE, LOCATION>, DISTANCE : Comparable<DISTANCE>> TravellingSalesmanProblem<LOCATION, DISTANCE>.bruteForce(): Tour<City<LOCATION, DISTANCE>> {
+fun <LOCATION : Distant<DISTANCE, LOCATION>, DISTANCE : Comparable<DISTANCE>> TravellingSalesmanProblem<LOCATION, DISTANCE>.bruteForceSolution(): Pair<Tour<City<LOCATION, DISTANCE>>, DISTANCE> {
 
-    return allTours().minBy(::totalDistance)!!
+    return allTours().minBy { it.second }!!
 }
 
 // TODO move, refactor
